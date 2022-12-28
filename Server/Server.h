@@ -28,10 +28,7 @@ class Server {
     size_t limit_;
     std::vector<sockaddr_in> receivers_;
     int current_;
-//    server_socket_(client_address),
-//        server_address_length_(client_address_length),
-//        socket_description_(socket(AF_INET, SOCK_DGRAM, 0)),
-//    receivers_(std::move(receivers))
+
  public:
     Server(const std::filesystem::path& config_file)
         :
@@ -102,7 +99,8 @@ class Server {
                 start = std::chrono::high_resolution_clock::time_point();
             }
             if (executed == limit_) {
-                while (std::chrono::high_resolution_clock::time_point() - start < 1s) {}
+                std::this_thread::sleep_for(1s - (std::chrono::high_resolution_clock::time_point() - start));
+                start = std::chrono::high_resolution_clock::time_point();
                 executed = 0;
                 start = std::chrono::high_resolution_clock::time_point();
             }
