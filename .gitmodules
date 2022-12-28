@@ -1,0 +1,6 @@
+[submodule "OMFL-parser"]
+	path = OMFL-parser
+	url = https://github.com/OHtuzh/OMFL-parser
+[submodule "ProgramArgumentParser"]
+	path = ProgramArgumentParser
+	url = https://github.com/OHtuzh/ProgramArgumentParser.git
