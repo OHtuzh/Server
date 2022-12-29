@@ -85,8 +85,7 @@ class Server {
 
     void Work() {
         using namespace std::chrono_literals;
-        limit_ *= receivers_.size();
-
+        // limit - это пропускная способность балансировщика
         server_address_length_ = sizeof(server_socket_);
         size_t executed = 0;
         std::chrono::high_resolution_clock::time_point start;
@@ -95,17 +94,15 @@ class Server {
             SendDatagram();
             executed++;
             if (std::chrono::high_resolution_clock::time_point() - start >= 1s) {
-                executed = 0;
+                executed = 0; // каждую секунду сбрасываем счётчик обработанных датаграмм за секунду
                 start = std::chrono::high_resolution_clock::time_point();
             }
-            if (executed == limit_) {
+            if (executed == limit_) { // если мы исчерпали лимит до окончания секунды, то даём потоку спать
                 std::this_thread::sleep_for(1s - (std::chrono::high_resolution_clock::time_point() - start));
-                start = std::chrono::high_resolution_clock::time_point();
                 executed = 0;
                 start = std::chrono::high_resolution_clock::time_point();
             }
         }
-
     }
 
 };
